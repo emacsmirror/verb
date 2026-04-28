@@ -70,7 +70,7 @@ Accept: application/json
 
 Then, press <kbd>C-c C-r C-r</kbd> (or <kbd>M-x</kbd>`verb-send-request-on-point-display`<kbd>RET</kbd>) to send the HTTP request.
 
-Here's a more complete example that includes defines two requests, both of which share the same base URL and `Accept` header:
+Here's a more complete example that defines two requests, both of which share the same base URL and `Accept` header:
 
 ```
 * Extended Quick Start                   :verb:
@@ -182,7 +182,7 @@ There's two recommended ways of closing response buffers:
 - If the response buffer is the current buffer, you can use the `verb-kill-response-buffer-and-window` command, which is bound by default to <kbd>C-c C-r C-k</kbd>. This command will also kill the associated response headers buffer (see the [Response Headers Buffer](https://github.com/federicotdn/verb#the-response-headers-buffer) section).
 - If the response buffer is not the current buffer (e.g. you are still on your `guide.org` buffer), you can kill **all** response buffers by using the `verb-kill-all-response-buffers`, which is bound to <kbd>C-c C-r C-k</kbd> by default. Response headers buffers will also be killed automatically.
 
-As you send more HTTP requests, more response buffers will be created, with `<N>` at the end of their name to distinguish between them. If you wish to automatically have old response buffers killed when making a new request, set the `verb-auto-kill-response-buffers` variable to `t`. If wish for old response buffers to be killed, with the exception of the N most recent ones, then set `verb-auto-kill-response-buffers` to that integer number. This is useful for keeping track of the history of responses received, without creating too many buffers.
+As you send more HTTP requests, more response buffers will be created, with `<N>` at the end of their name to distinguish between them. If you wish to automatically have old response buffers killed when making a new request, set the `verb-auto-kill-response-buffers` variable to `t`, or to an integer N to keep only the N most recent ones.
 
 ### Re-sending Requests
 
@@ -303,7 +303,7 @@ Content-Type: application/json; charset=utf-8
 }
 ```
 
-Notice that the two request specifications share many things in common: the URL host, path and one header. In order to avoid repeating all this information, we can actually define a `template` request, establishing all the common attributes among requests, and then extend this template request with different values. Using `template` allows you to avoid specifying an HTTP method at a points in your file where you only want to establish shared attributes for other requests. To use it, create a new level 1 heading, and move the already existing headings below it, making them level 2 child headings:
+Notice that the two request specifications share many things in common: the URL host, path and one header. In order to avoid repeating all this information, we can actually define a `template` request, establishing all the common attributes among requests, and then extend this template request with different values. Using `template` allows you to avoid specifying an HTTP method at points in your file where you only want to establish shared attributes for other requests. To use it, create a new level 1 heading, and move the already existing headings below it, making them level 2 child headings:
 
 ```
 * User management             :verb:
@@ -520,7 +520,7 @@ dev: zzz999
 
 ### Inline Preludes
 
-If you do not with to keep your Verb `.org` file separate from your variable declarations, it is also possible to specify either Emacs Lisp or JSON content directly in the `Verb-Prelude` property. For example, for Emacs Lisp:
+If you do not wish to keep your Verb `.org` file separate from your variable declarations, it is also possible to specify either Emacs Lisp or JSON content directly in the `Verb-Prelude` property. For example, for Emacs Lisp:
 
 ```text
 :properties:
@@ -558,7 +558,7 @@ get /{{(verb-json-get (oref verb-last body) "id")}}
 Accept: application/json
 ```
 
-The `verb-json-get` (mentioned earlier in this guide) function takes a JSON-formatted text as its first argument and a list of keys as the rest, and returns the value under those keys in the JSON text (similar to how [JSONPath](https://goessner.net/articles/JsonPath/) works). This function is useful for using previous responses' contents, check its documentation for more details.
+The `verb-json-get` function takes a JSON-formatted text as its first argument and a list of keys as the rest, and returns the value under those keys in the JSON text (similar to how [JSONPath](https://goessner.net/articles/JsonPath/) works). This function is useful for using previous responses' contents, check its documentation for more details.
 
 If you wish to use the last response's headers instead, you can use the `verb-headers-get` function. An example call may look like: `(verb-headers-get verb-last "Content-Type")`, which will return the string contents of the `Content-Type` response header.
 
@@ -646,7 +646,7 @@ bar,
 baz
 ```
 
-This has the same effect as the previous example. Note also how we've used the feature of adding to a propertie's value. The final `lambda` expression will be equivalent to:
+This has the same effect as the previous example. Note also how we've used the feature of adding to a property's value. The final `lambda` expression will be equivalent to:
 
 ```elisp
 (lambda (rs) (thread-last (oref rs body) (replace-regexp-in-string "\n" " ") (oset rs body)) rs)
@@ -1018,7 +1018,7 @@ Ideally, new features and functions should include tests, see file `test/verb-te
 $ make test
 ```
 
-To run only one test, set the `SELECTOR` environment variable to the tests's name:
+To run only one test, set the `SELECTOR` environment variable to the test's name:
 ```bash
 $ SELECTOR=test-nonempty-string make test
 ```
